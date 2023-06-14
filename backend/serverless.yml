@@ -7,6 +7,9 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-deployment-bucket  
 
 provider:
   name: aws
@@ -41,6 +44,9 @@ provider:
             - xray:PutTraceSegments
           Resource: "*"
 
+  deploymentBucket:
+    name: alzamly-custom-deployment-bucket
+    serverSideEncryption: AES256
 
 functions:
 
