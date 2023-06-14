@@ -1,5 +1,5 @@
 # TODO: Change the name of the org 
-org: alzamly
+org: self-learning
 app: serverless-todo-app
 service: serverless-todo-app
 
@@ -28,7 +28,7 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-alzamly-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   logs:
