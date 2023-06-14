@@ -1,12 +1,11 @@
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { createLogger } from '../src/utils/logger'
-import { TodoItem } from '../src/models/TodoItem'
-import { TodoUpdate } from '../src/models/TodoUpdate';
+import { createLogger } from '../utils/logger'
+import { TodoItem } from '../models/TodoItem'
+import { TodoUpdate } from '../models/TodoUpdate';
 
 const AWSXRay = require('aws-xray-sdk-core')
 const XAWS = AWSXRay.captureAWS(AWS)
-
 
 // TODO: Implement the dataLayer logic
 export class TodosAccess{
