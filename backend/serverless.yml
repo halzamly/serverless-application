@@ -1,5 +1,5 @@
 # TODO: Change the name of the org 
-org: self-learning
+org: hossam
 app: serverless-todo-app
 service: serverless-todo-app
 
@@ -13,7 +13,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   lambdaHashingVersion: '20201221'
 
   stage: ${opt:stage, 'dev'}
@@ -43,6 +43,21 @@ provider:
             - xray:PutTelemetryRecords
             - xray:PutTraceSegments
           Resource: "*"
+
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Udagram TODO Item API
+        description: Serverless TODO App
+    models:
+      - name: CreateTodoModel
+        contentType: application/json
+        schema: ${file(models/create-todo-model.json)}
+      - name: UpdateTodoModel
+        contentType: application/json
+        schema: ${file(models/update-todo-model.json)}
 
   deploymentBucket:
     name: alzamly-custom-deployment-bucket
@@ -90,10 +105,10 @@ functions:
               application/json: ${file(models/create-todo-model.json)}
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Create new TODO
-            description: create a todo task
+            summary: Create a new TODO item
+            description: Create a new TODO task
             requestModels:
-              'application/json': CreateTodoRequest
+              'application/json': CreateTodoModel
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -112,10 +127,10 @@ functions:
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Update TODO
-            description: update a todo task
+            summary: Update a TODO item
+            description: Update a TODO task
             requestModels:
-              'application/json': UpdateTodoRequest
+              'application/json': UpdateTodoModel
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -217,10 +232,15 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
+        BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}    
         OwnershipControls:
           Rules:
             - ObjectOwnership: ObjectWriter
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
         CorsConfiguration:
           CorsRules:
             -
@@ -242,12 +262,16 @@ resources:
       Type: AWS::S3::BucketPolicy
       Properties:
         PolicyDocument:
-          Id: svo-attachment-serverless-c4-todo-images-Policy
+          Id: attachment-serverless-c4-todo-images-Policy
           Version: "2012-10-17"
           Statement:
-            - Sid: PublicReadForGetBucketObjects
+            - Sid: PublicReadWriteBucketPolicy
               Effect: Allow
               Principal: '*'
-              Action: 's3:GetObject'
+              Action: 
+                - "s3:GetObject"
+                - "s3:PutObject"
+                - "s3:PutObjectAcl"
+                - "s3:DeleteObject"
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket      
