@@ -40,8 +40,8 @@ custom:
     api:
       info:
         version: v1.0.0
-        title: Udagram TODO Item API
-        description: Serverless TODO App
+        title: Udagram TODO-App API
+        description: Serverless TODO Application
     models:
       - name: CreateTodoModel
         contentType: application/json
@@ -97,9 +97,6 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-          request:
-            schemas:
-              application/json: ${file(models/create-todo-model.json)}
           reqValidatorName: RequestBodyValidator
           documentation:
             summary: Create a new TODO item
