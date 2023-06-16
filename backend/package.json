@@ -15,11 +15,10 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.118",
+    "@types/aws-lambda": "^8.10.119",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^10.17.60",
-    "aws-sdk": "^2.1397.0",
-    "serverless-aws-documentation": "^1.1.0",
+    "aws-sdk": "^2.1398.0",
     "serverless-deployment-bucket": "^1.6.0",
     "serverless-iam-roles-per-function": "^3.2.0-e97ab49",
     "serverless-plugin-canary-deployments": "^0.4.8",

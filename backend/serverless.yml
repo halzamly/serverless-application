@@ -8,7 +8,6 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
   - serverless-reqvalidator-plugin
-  - serverless-aws-documentation
   - serverless-deployment-bucket  
 
 provider:
@@ -34,21 +33,6 @@ provider:
   logs:
     # Enable API Gateway logs
     restApi: true
-
-custom:
-  documentation:
-    api:
-      info:
-        version: v1.0.0
-        title: Udagram TODO-App API
-        description: Serverless TODO Application
-    models:
-      - name: CreateTodoModel
-        contentType: application/json
-        schema: ${file(models/create-todo-model.json)}
-      - name: UpdateTodoModel
-        contentType: application/json
-        schema: ${file(models/update-todo-model.json)}
 
   deploymentBucket:
     name: alzamly-custom-deployment-bucket
@@ -98,11 +82,12 @@ functions:
           cors: true
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
-          documentation:
-            summary: Create a new TODO item
-            description: Create a new TODO task
-            requestModels:
-              'application/json': CreateTodoModel
+          request:
+            schemas:
+              application/json:
+                schema: ${file(models/create-todo-model.json)}
+                name: CreateTodoModel
+                description: 'Validation model for Creating ToDo Item'
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -126,11 +111,12 @@ functions:
           cors: true
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
-          documentation:
-            summary: Update a TODO item
-            description: Update a TODO task
-            requestModels:
-              'application/json': UpdateTodoModel
+          request:
+            schemas:
+              application/json:
+                schema: ${file(models/update-todo-model.json)}
+                name: UpdateTodoModel
+                description: 'Validation model for Updating ToDo Item'
     iamRoleStatements:
       - Effect: Allow
         Action:
